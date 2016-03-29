@@ -3,6 +3,7 @@ import $ from 'jquery';
 
 import BaseComponent from './common/BaseComponent';
 import UserProfile from './UserProfile';
+import NavigationMenu from './NavigationMenu';
 import LogOut from './LogOut';
 
 class LoggedIn extends BaseComponent {
@@ -75,6 +76,7 @@ class LoggedIn extends BaseComponent {
     if (this.state.profile) {
       return (
         <div>
+          <NavigationMenu />
           <UserProfile profile={this.state.profile} />
           <div className="logout-box">
             <LogOut />

@@ -3,6 +3,7 @@ import $ from 'jquery';
 
 import BaseComponent from './common/BaseComponent';
 import UserTable from './UserTable';
+import NavigationMenu from './NavigationMenu';
 
 class UserList extends BaseComponent {
 
@@ -33,6 +34,7 @@ class UserList extends BaseComponent {
   render() {
     return (
       <div>
+        <NavigationMenu />
         <UserTable users={this.state.users} />
       </div>
     );
