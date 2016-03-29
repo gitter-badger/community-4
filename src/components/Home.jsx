@@ -1,13 +1,25 @@
 import React from 'react';
 
-const Home = function Home() {
-  return (
-    <div>Hello world!</div>
-  );
-};
+import BaseComponent from './common/BaseComponent';
 
-Home.propTypes = {
-  bug: React.PropTypes.object,
-};
+class Home extends BaseComponent {
+
+  constructor(props) {
+    super(props);
+    this._bind('showLock');
+  }
+
+  showLock() {
+    this.props.lock.show();
+  }
+
+  render() {
+    return (
+      <div className="login-box">
+        <a onClick={this.showLock}>Sign In</a>
+      </div>
+    );
+  }
+}
 
 export default Home;
