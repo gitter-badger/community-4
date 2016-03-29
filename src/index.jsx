@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Home from './components/Home';
+
 ReactDOM.render(
-  <div>Hello world!</div>,
+  <Home />,
   document.getElementById('main'));
