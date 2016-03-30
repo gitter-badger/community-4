@@ -2,10 +2,18 @@ import React from 'react';
 import $ from 'jquery';
 
 import BaseComponent from './common/BaseComponent';
-import UpperPanel from './UpperPanel';
-import BottomPanel from './BottomPanel';
+import UpperUserPanel from './UpperUserPanel';
+import BottomUserPanel from './BottomUserPanel';
 
-class Dashboard extends BaseComponent {
+const geolocation = (
+  navigator.geolocation || {
+    getCurrentPosition: (success, failure) => {
+      failure('Your browser doesn\'t support geolocation.');
+    },
+  }
+);
+
+class UserDashboard extends BaseComponent {
 
   constructor(props) {
     super(props);
@@ -24,6 +32,40 @@ class Dashboard extends BaseComponent {
     });
   }
 
+  getUserLocationAndExecCallback(userProfile, callback) {
+    const user = userProfile;
+    user.latitude = 0.0;
+    user.longitude = 0.0;
+    geolocation.getCurrentPosition((position) => {
+      user.latitude = position.coords.latitude;
+      user.longitude = position.coords.longitude;
+      callback(user);
+    }, (reason) => {
+      console.log(`Unable to retrieve current position: ${reason}`);
+      callback(user);
+    });
+  }
+
+  registerUserLocation(user) {
+    const updatedLocation = {
+      latitude: user.latitude,
+      longitude: user.longitude,
+    };
+    $.ajax({
+      url: `/api/users/${user.user_id}`,
+      contentType: 'application/json',
+      headers: { 'If-Match': user._etag },
+      type: 'PATCH',
+      data: JSON.stringify(updatedLocation),
+      success: function registerUserLocationSuccess() {
+        console.log('User position updated.');
+      },
+      error: function registerUserLocationError(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this),
+    });
+  }
+
   registerUserIfNotExisting(profile) {
     $.ajax({
       url: '/api/users',
@@ -35,10 +77,13 @@ class Dashboard extends BaseComponent {
       success: function loadDataSuccess(data) {
         if (data._items.length !== 0) {
           console.log('User exists!');
-          this.setState({ profile: data._items[0] });
+          const userProfile = data._items[0];
+          this.setState({ profile: userProfile });
+          this.getUserLocationAndExecCallback(userProfile, this.registerUserLocation.bind(this));
         } else {
           console.log('User do not exists! It will be created.');
-          this.registerNewUser(profile);
+          const userProfile = profile;
+          this.getUserLocationAndExecCallback(userProfile, this.registerNewUser.bind(this));
         }
       }.bind(this),
       error: function loadDataError(xhr, status, err) {
@@ -55,6 +100,8 @@ class Dashboard extends BaseComponent {
       email: '',
       city: profile.location.name,
       profession: profile.headline,
+      latitude: profile.latitude,
+      longitude: profile.longitude,
     };
     $.ajax({
       url: '/api/users',
@@ -75,8 +122,8 @@ class Dashboard extends BaseComponent {
     if (this.state.profile) {
       return (
         <div>
-          <UpperPanel display={this.props.display} profile={this.state.profile} />
-          <BottomPanel />
+          <UpperUserPanel profile={this.state.profile} />
+          <BottomUserPanel />
         </div>
       );
     }
@@ -86,4 +133,4 @@ class Dashboard extends BaseComponent {
   }
 }
 
-export default Dashboard;
+export default UserDashboard;

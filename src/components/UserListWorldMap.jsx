@@ -1,5 +1,6 @@
 import React from 'react';
-import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
+import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
+import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 
 import BaseComponent from './common/BaseComponent';
 
@@ -11,10 +12,9 @@ const geolocation = (
   }
 );
 
-class WorldMap extends BaseComponent {
-
-  constructor() {
-    super();
+class UserListWorldMap extends BaseComponent {
+  constructor(props) {
+    super(props);
     this.state = {
       center: null,
     };
@@ -39,7 +39,16 @@ class WorldMap extends BaseComponent {
           <GoogleMapLoader
             containerElement={ <div style={{ height: '100%' }} /> }
             googleMapElement={
-              <GoogleMap defaultZoom={12} center={this.state.center} />
+              <GoogleMap defaultZoom={12} center={this.state.center}>
+                <MarkerClusterer averageCenter enableRetinaIcons gridSize={ 60 } >
+                  {this.props.users.map(user => (
+                    <Marker
+                      position={{ lat: user.latitude, lng: user.longitude }}
+                      key={ user.user_id }
+                    />
+                  ))}
+                </MarkerClusterer>
+              </GoogleMap>
             }
           />
         </section>
@@ -47,4 +56,4 @@ class WorldMap extends BaseComponent {
   }
 }
 
-export default WorldMap;
+export default UserListWorldMap;

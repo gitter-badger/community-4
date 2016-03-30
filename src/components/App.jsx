@@ -5,12 +5,13 @@ import config from 'config';
 
 import BaseComponent from './common/BaseComponent';
 import Home from './Home';
-import Dashboard from './Dashboard';
+import UserDashboard from './UserDashboard';
+import UserListDashboard from './UserListDashboard';
 
 class App extends BaseComponent {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this._bind('getIdToken');
     this.state = {
       idToken: null,
@@ -43,11 +44,26 @@ class App extends BaseComponent {
   }
 
   render() {
+    let dashboard = null;
+    switch (this.props.display) {
+      case 'userList':
+        dashboard = (
+          <UserListDashboard />
+        );
+        break;
+      default:
+        dashboard = (
+          <UserDashboard lock={this.lock} idToken={this.state.idToken} />
+        );
+        break;
+    }
+
     if (this.state.idToken) {
       return (
-        <Dashboard lock={this.lock} idToken={this.state.idToken}
-          display={this.props.display}
-        />);
+        <div>
+        { dashboard }
+        </div>
+      );
     }
     return (<Home lock={this.lock} />);
   }
