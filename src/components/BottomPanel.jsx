@@ -1,9 +1,9 @@
 import React from 'react';
 
-const BottomPanel = function BottomPanel() {
-  return (
-    <div>Bottom Panel</div>
-  );
+import WorldMap from './WorldMap';
+
+const BottomPanel = function bottomPanel() {
+  return (<WorldMap />);
 };
 
 export default BottomPanel;

@@ -9,6 +9,7 @@ import Redirect from 'react-router/lib/Redirect';
 
 import App from './components/App';
 import LogOut from './components/LogOut';
+import BottomPanel from './components/BottomPanel';
 
 const UserListWrapper = function userListWrapper() {
   return (<App display="userList" />);
@@ -25,4 +26,5 @@ ReactDOM.render(
   <Route path="/home" component={HomeWrapper} />
   <Route path="/users" component={UserListWrapper} />
   <Route path="/logout" component={LogOut} />
+  <Route path="/test" component={BottomPanel} />
 </Router>, document.getElementById('main'));
