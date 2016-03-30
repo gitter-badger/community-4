@@ -5,7 +5,7 @@ import config from 'config';
 
 import BaseComponent from './common/BaseComponent';
 import Home from './Home';
-import LoggedIn from './LoggedIn';
+import Dashboard from './Dashboard';
 
 class App extends BaseComponent {
 
@@ -44,7 +44,10 @@ class App extends BaseComponent {
 
   render() {
     if (this.state.idToken) {
-      return (<LoggedIn lock={this.lock} idToken={this.state.idToken} />);
+      return (
+        <Dashboard lock={this.lock} idToken={this.state.idToken}
+          display={this.props.display}
+        />);
     }
     return (<Home lock={this.lock} />);
   }

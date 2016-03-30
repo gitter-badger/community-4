@@ -2,14 +2,13 @@ import React from 'react';
 import $ from 'jquery';
 
 import BaseComponent from './common/BaseComponent';
-import UserProfile from './UserProfile';
-import NavigationMenu from './NavigationMenu';
-import LogOut from './LogOut';
+import UpperPanel from './UpperPanel';
+import BottomPanel from './BottomPanel';
 
-class LoggedIn extends BaseComponent {
+class Dashboard extends BaseComponent {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       profile: null,
     };
@@ -76,18 +75,15 @@ class LoggedIn extends BaseComponent {
     if (this.state.profile) {
       return (
         <div>
-          <NavigationMenu />
-          <UserProfile profile={this.state.profile} />
-          <div className="logout-box">
-            <LogOut />
-          </div>
+          <UpperPanel display={this.props.display} profile={this.state.profile} />
+          <BottomPanel />
         </div>
       );
     }
     return (
-      <div className="loading">Loading profile</div>
+      <div className="loading">Loading dashboard...</div>
     );
   }
 }
 
-export default LoggedIn;
+export default Dashboard;

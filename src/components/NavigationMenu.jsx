@@ -1,5 +1,6 @@
 import React from 'react';
 import NavigationLink from './NavigationLink';
+import LogOut from './LogOut';
 
 const NavigationMenu = function navigationMenu() {
   return (
@@ -9,6 +10,9 @@ const NavigationMenu = function navigationMenu() {
       </li>
       <li>
         <NavigationLink to="/users">User List</NavigationLink>
+      </li>
+      <li>
+        <LogOut />
       </li>
     </ul>
   );
