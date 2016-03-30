@@ -35,7 +35,7 @@ class WorldMap extends BaseComponent {
 
   render() {
     return (
-        <section style={{ position: 'absolute', height: '100%', width: '100%' }}>
+        <section style={{ position: 'absolute', height: '95%', width: '100%' }}>
           <GoogleMapLoader
             containerElement={ <div style={{ height: '100%' }} /> }
             googleMapElement={
