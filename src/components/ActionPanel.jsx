@@ -4,11 +4,16 @@ import NavigationMenu from './NavigationMenu';
 import UserList from './UserList';
 
 const ActionPanel = function ActionPanel(props) {
+  let displayUserTable = <div>Sorry, no users found.</div>;
+  if (props.users.length !== 0) {
+    displayUserTable = <UserList users={props.users} />;
+  }
+
   return (
     <div>
       <NavigationMenu />
       Action Panel
-      <UserList users={props.users} />
+      {displayUserTable}
     </div>
   );
 };

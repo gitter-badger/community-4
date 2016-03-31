@@ -23,6 +23,7 @@ class App extends BaseComponent {
     this._bind('getIdToken');
     this.state = {
       idToken: null,
+      profile: null,
     };
   }
 
@@ -152,7 +153,7 @@ class App extends BaseComponent {
     if (this.state.idToken) {
       return (
         <div>
-          <Dashboard />
+          <Dashboard user={this.state.profile} />
         </div>
       );
     }

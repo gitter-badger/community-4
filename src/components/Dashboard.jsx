@@ -23,6 +23,7 @@ class Dashboard extends BaseComponent {
       url: '/api/users',
       cache: false,
       success: function loadUserListSuccess(data) {
+        data._items.splice(data._items.indexOf(this.props.user), 1);
         this.setState({ users: data._items });
       }.bind(this),
       error: function loadUserListError(xhr, status, err) {
