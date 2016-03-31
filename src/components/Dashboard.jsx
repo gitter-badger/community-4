@@ -10,7 +10,7 @@ class Dashboard extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      users: null,
     };
   }
 
@@ -18,12 +18,20 @@ class Dashboard extends BaseComponent {
     this.loadUserList();
   }
 
+  removeUserFromArray(arr, user) {
+    for (let i = arr.length; i--;) {
+      if (arr[i]._id === user._id) {
+        arr.splice(i, 1);
+      }
+    }
+  }
+
   loadUserList() {
     $.ajax({
       url: '/api/users',
       cache: false,
       success: function loadUserListSuccess(data) {
-        data._items.splice(data._items.indexOf(this.props.user), 1);
+        this.removeUserFromArray(data._items, this.props.user);
         this.setState({ users: data._items });
       }.bind(this),
       error: function loadUserListError(xhr, status, err) {
@@ -33,12 +41,15 @@ class Dashboard extends BaseComponent {
   }
 
   render() {
-    return (
-      <div>
-        <ActionPanel users={this.state.users} />
-        <MapPanel users={this.state.users} />
-      </div>
-    );
+    if (this.state.users) {
+      return (
+        <div>
+          <ActionPanel users={this.state.users} />
+          <MapPanel users={this.state.users} />
+        </div>
+      );
+    }
+    return (<div>Loading dashboard...</div>);
   }
 }
 
