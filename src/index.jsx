@@ -10,6 +10,7 @@ import Redirect from 'react-router/lib/Redirect';
 import App from './components/App';
 import UserProfileContainer from './components/UserProfileContainer';
 import LogOut from './components/LogOut';
+import UserGeneratorMap from './components/UserGeneratorMap';
 
 ReactDOM.render(
   <Router history={browserHistory}>
@@ -17,4 +18,5 @@ ReactDOM.render(
   <Route path="/home" component={App} />
   <Route path="/profile" component={UserProfileContainer} />
   <Route path="/logout" component={LogOut} />
+  <Route path="/map" component={UserGeneratorMap} />
 </Router>, document.getElementById('main'));
