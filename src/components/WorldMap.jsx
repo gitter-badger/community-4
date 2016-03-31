@@ -43,12 +43,15 @@ class WorldMap extends BaseComponent {
             googleMapElement={
               <GoogleMap defaultZoom={12} center={this.state.center}>
                 <MarkerClusterer averageCenter enableRetinaIcons gridSize={ 60 } >
-                  {this.props.users.map(user => (
-                    <Marker
-                      position={{ lat: user.latitude, lng: user.longitude }}
-                      key={ user.user_id }
-                    />
-                  ))}
+                  {this.props.users.map(user => {
+                    if (user.latitude && user.longitude) {
+                      return (<Marker
+                        position={{ lat: user.latitude, lng: user.longitude }}
+                        key={ user.user_id }
+                      />);
+                    }
+                    return false;
+                  })}
                 </MarkerClusterer>
               </GoogleMap>
             }
