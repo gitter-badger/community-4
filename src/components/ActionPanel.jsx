@@ -3,18 +3,18 @@ import React from 'react';
 import NavigationMenu from './NavigationMenu';
 import UserList from './UserList';
 
-const UpperUserListPanel = function UpperUserListPanel(props) {
+const ActionPanel = function ActionPanel(props) {
   return (
     <div>
       <NavigationMenu />
-      Upper Panel
+      Action Panel
       <UserList users={props.users} />
     </div>
   );
 };
 
-UpperUserListPanel.propTypes = {
+ActionPanel.propTypes = {
   users: React.PropTypes.array,
 };
 
-export default UpperUserListPanel;
+export default ActionPanel;

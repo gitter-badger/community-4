@@ -4,6 +4,8 @@ import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerC
 
 import BaseComponent from './common/BaseComponent';
 
+
+// TODO: Use user profile geolocation (retrieved in App.jsx) instead of another call to geolocation
 const geolocation = (
   navigator.geolocation || {
     getCurrentPosition: (success, failure) => {
@@ -12,7 +14,7 @@ const geolocation = (
   }
 );
 
-class UserListWorldMap extends BaseComponent {
+class WorldMap extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,4 +58,4 @@ class UserListWorldMap extends BaseComponent {
   }
 }
 
-export default UserListWorldMap;
+export default WorldMap;

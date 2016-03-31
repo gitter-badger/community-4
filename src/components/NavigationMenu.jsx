@@ -9,7 +9,7 @@ const NavigationMenu = function navigationMenu() {
         <NavigationLink to="/" onlyActiveOnIndex>Home</NavigationLink>
       </li>
       <li>
-        <NavigationLink to="/users">User List</NavigationLink>
+        My profile
       </li>
       <li>
         <LogOut />

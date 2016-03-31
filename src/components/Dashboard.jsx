@@ -2,10 +2,10 @@ import React from 'react';
 import $ from 'jquery';
 
 import BaseComponent from './common/BaseComponent';
-import UpperUserListPanel from './UpperUserListPanel';
-import BottomUserListPanel from './BottomUserListPanel';
+import ActionPanel from './ActionPanel';
+import MapPanel from './MapPanel';
 
-class UserListDashboard extends BaseComponent {
+class Dashboard extends BaseComponent {
 
   constructor(props) {
     super(props);
@@ -25,7 +25,7 @@ class UserListDashboard extends BaseComponent {
       success: function loadUserListSuccess(data) {
         this.setState({ users: data._items });
       }.bind(this),
-      error: function loadDataError(xhr, status, err) {
+      error: function loadUserListError(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this),
     });
@@ -34,11 +34,11 @@ class UserListDashboard extends BaseComponent {
   render() {
     return (
       <div>
-        <UpperUserListPanel users={this.state.users} />
-        <BottomUserListPanel users={this.state.users} />
+        <ActionPanel users={this.state.users} />
+        <MapPanel users={this.state.users} />
       </div>
     );
   }
 }
 
-export default UserListDashboard;
+export default Dashboard;
