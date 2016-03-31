@@ -10,19 +10,9 @@ import Redirect from 'react-router/lib/Redirect';
 import App from './components/App';
 import LogOut from './components/LogOut';
 
-const UserListWrapper = function userListWrapper() {
-  return (<App display="userList" />);
-};
-
-const HomeWrapper = function homeWrapper() {
-  return (<App display="home" />);
-};
-
-
 ReactDOM.render(
   <Router history={browserHistory}>
   <Redirect from="/" to="/home" />
-  <Route path="/home" component={HomeWrapper} />
-  <Route path="/users" component={UserListWrapper} />
+  <Route path="/home" component={App} />
   <Route path="/logout" component={LogOut} />
 </Router>, document.getElementById('main'));

@@ -1,8 +1,11 @@
 import React from 'react';
-import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
+import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
+import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 
 import BaseComponent from './common/BaseComponent';
 
+
+// TODO: Use user profile geolocation (retrieved in App.jsx) instead of another call to geolocation
 const geolocation = (
   navigator.geolocation || {
     getCurrentPosition: (success, failure) => {
@@ -12,9 +15,8 @@ const geolocation = (
 );
 
 class WorldMap extends BaseComponent {
-
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       center: null,
     };
@@ -39,7 +41,16 @@ class WorldMap extends BaseComponent {
           <GoogleMapLoader
             containerElement={ <div style={{ height: '100%' }} /> }
             googleMapElement={
-              <GoogleMap defaultZoom={12} center={this.state.center} />
+              <GoogleMap defaultZoom={12} center={this.state.center}>
+                <MarkerClusterer averageCenter enableRetinaIcons gridSize={ 60 } >
+                  {this.props.users.map(user => (
+                    <Marker
+                      position={{ lat: user.latitude, lng: user.longitude }}
+                      key={ user.user_id }
+                    />
+                  ))}
+                </MarkerClusterer>
+              </GoogleMap>
             }
           />
         </section>
