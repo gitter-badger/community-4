@@ -134,8 +134,22 @@ class App extends BaseComponent {
     });
   }
 
+  getProfile(userID) {
+    $.ajax({
+      url: `/api/users/${userID}`,
+      cache: false,
+      success: function getProfileSuccess(userData) {
+        this.setState({ profile: userData });
+      }.bind(this),
+      error: function getProfileError(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this),
+    });
+  }
+
   getIdToken() {
     let idToken = localStorage.getItem('userToken');
+    const userID = localStorage.getItem('userID');
     const authHash = this.lock.parseHash(window.location.hash);
     if (!idToken && authHash) {
       if (authHash.id_token) {
@@ -147,17 +161,22 @@ class App extends BaseComponent {
         console.log('Error signing in', authHash);
         return null;
       }
+    } else if (idToken && userID) {
+      this.getProfile(userID);
     }
     return idToken;
   }
 
   render() {
     if (this.state.idToken) {
-      return (
-        <div>
-          <Dashboard user={this.state.profile} />
-        </div>
-      );
+      if (this.state.profile) {
+        return (
+          <div>
+            <Dashboard user={this.state.profile} />
+          </div>
+        );
+      }
+      return (<div>Loading dashboard...</div>);
     }
     return (<Home lock={this.lock} />);
   }
