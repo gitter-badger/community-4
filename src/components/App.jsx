@@ -41,7 +41,7 @@ class App extends BaseComponent {
       longitude: user.longitude,
     };
     $.ajax({
-      url: `/api/users/${user.user_id}`,
+      url: `/api/users/${user._id}`,
       contentType: 'application/json',
       headers: { 'If-Match': user._etag },
       type: 'PATCH',
