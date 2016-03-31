@@ -72,9 +72,10 @@ class App extends BaseComponent {
       contentType: 'application/json',
       type: 'POST',
       data: JSON.stringify(user),
-      success: function registerNewUserSuccess() {
+      success: function registerNewUserSuccess(data) {
         console.log('User created');
         this.setState({ profile: user });
+        localStorage.setItem('userID', data._id);
       }.bind(this),
       error: function registerNewUserError(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -110,6 +111,7 @@ class App extends BaseComponent {
           const userProfile = data._items[0];
           this.setState({ profile: userProfile });
           this.getUserLocationAndExecCallback(userProfile, this.registerUserLocation.bind(this));
+          localStorage.setItem('userID', userProfile._id);
         } else {
           console.log('User do not exists! It will be created.');
           const userProfile = profile;
