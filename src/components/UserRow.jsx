@@ -2,18 +2,15 @@ import React from 'react';
 
 const UserRow = function UserRow(props) {
   return (
-    <tr>
-      <td>{props.user_profile.firstname}</td>
-      <td>{props.user_profile.lastname}</td>
-      <td>{props.user_profile.email}</td>
-      <td>{props.user_profile.city}</td>
-      <td>{props.user_profile.profession}</td>
-    </tr>
+    <div style={{ height: '50px' }}>
+      {props.user.firstname} {props.user.lastname} - {props.user.email}
+      - {props.user.profession} @ {props.user.city}
+    </div>
   );
 };
 
 UserRow.propTypes = {
-  user_profile: React.PropTypes.object,
+  user: React.PropTypes.object,
 };
 
 export default UserRow;
