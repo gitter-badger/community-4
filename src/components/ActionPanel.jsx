@@ -1,12 +1,12 @@
 import React from 'react';
 
 import NavigationMenu from './NavigationMenu';
-import UserList from './UserList';
+import InfiniteUserList from './InfiniteUserList';
 
 const ActionPanel = function ActionPanel(props) {
   let displayUserTable = <div>Sorry, no users found.</div>;
   if (props.users.length !== 0) {
-    displayUserTable = <UserList users={props.users} />;
+    displayUserTable = <InfiniteUserList users={props.users} />;
   }
 
   return (

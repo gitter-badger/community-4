@@ -5,6 +5,8 @@ import BaseComponent from './common/BaseComponent';
 import ActionPanel from './ActionPanel';
 import MapPanel from './MapPanel';
 
+const PAGING_ELEMENTS = 10;
+
 class Dashboard extends BaseComponent {
 
   constructor(props) {
@@ -30,6 +32,10 @@ class Dashboard extends BaseComponent {
     $.ajax({
       url: '/api/users',
       cache: false,
+      data: {
+        max_results: PAGING_ELEMENTS,
+        page: 1,
+      },
       success: function loadUserListSuccess(data) {
         this.removeUserFromArray(data._items, this.props.user);
         this.setState({ users: data._items });
