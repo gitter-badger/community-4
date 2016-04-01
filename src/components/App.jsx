@@ -74,6 +74,7 @@ class App extends BaseComponent {
       data: JSON.stringify(user),
       success: function registerNewUserSuccess(data) {
         console.log('User created');
+        user._id = data._id;
         this.setState({ profile: user });
         localStorage.setItem('userID', data._id);
       }.bind(this),
