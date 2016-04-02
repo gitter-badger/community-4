@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 
 import BaseComponent from './common/BaseComponent';
 
@@ -6,17 +7,32 @@ class Home extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this._bind('showLock');
+    this._bind('showAuth0Lock');
   }
 
-  showLock() {
+  showAuth0Lock() {
     this.props.lock.show();
   }
 
   render() {
     return (
-      <div className="login-box">
-        <a onClick={this.showLock}>Sign In</a>
+      <div style={{ width: '100%',
+        height: '100%',
+        backgroundImage: 'url(/images/community.jpg)',
+        backgroundSize: 'cover' }}
+      >
+        <div style={{ textAlign: 'center', position: 'relative',
+          top: '50%', transform: 'translateY(-50%)' }}
+        >
+          <div style={{ fontSize: '3.7em', fontStyle: 'bold' }}>
+            Welcome to the community
+          </div>
+          <div style={{ marginTop: '25px' }}>
+            <Button onClick={this.showAuth0Lock} bsStyle="primary" bsSize="large">
+              Join us !
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }

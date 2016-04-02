@@ -1,10 +1,50 @@
 import React from 'react';
+import { Image, Button, Glyphicon } from 'react-bootstrap';
 
 const UserRow = function UserRow(props) {
+  let displayContactButton = <div></div>;
+  if (props.user.email) {
+    displayContactButton = (
+      <a href={'mailto:' + props.user.email + '?subject=Hi from Community!'}>
+        <Button bsStyle="info" bsSize="large">
+          <Glyphicon glyph="envelope" />
+        </Button>
+      </a>
+    );
+  }
+
   return (
-    <div style={{ height: '50px' }}>
-      {props.user.firstname} {props.user.lastname} - {props.user.email}
-      - {props.user.profession} @ {props.user.city}
+    <div style={{ width: '100%', height: '100px' }}>
+      <div style={{ width: '25%', float: 'left' }}>
+        <Image src="/images/avatar.png" responsive style={{ margin: '0 auto' }} />
+      </div>
+      <div style={{ height: '100%', width: '75%', float: 'left' }}>
+        <div style={{ height: '100%', width: '65%', float: 'left' }}>
+          <div style={{
+            textAlign: 'center',
+            position: 'relative', top: '50%',
+            transform: 'translateY(-50%)' }}
+          >
+            <div style={{
+              fontSize: '1.7em',
+              fontStyle: 'bold' }}
+            >
+              {props.user.firstname} {props.user.lastname}
+            </div>
+            <div style={{ color: 'grey' }}>
+              {props.user.profession} @ {props.user.city}
+            </div>
+          </div>
+        </div>
+        <div style={{ height: '100%', width: '35%', float: 'left' }}>
+          <div style={{
+            textAlign: 'center', position: 'relative',
+            top: '50%', transform: 'translateY(-50%)' }}
+          >
+            {displayContactButton}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

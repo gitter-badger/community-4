@@ -92,8 +92,8 @@ class App extends BaseComponent {
       user.latitude = position.coords.latitude;
       user.longitude = position.coords.longitude;
       callback(user);
-    }, (reason) => {
-      console.log(`Unable to retrieve current position: ${reason}`);
+    }, () => {
+      console.log('Unable to retrieve current position.');
       callback(user);
     });
   }
@@ -172,9 +172,7 @@ class App extends BaseComponent {
     if (this.state.idToken) {
       if (this.state.profile) {
         return (
-          <div>
-            <Dashboard user={this.state.profile} />
-          </div>
+          <Dashboard user={this.state.profile} />
         );
       }
       return (<div>Loading dashboard...</div>);

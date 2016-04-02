@@ -64,11 +64,11 @@ export default class InfiniteUserList extends BaseComponent {
 
   render() {
     return (
-      <div style={{ height: '250px' }}>
+      <div style={{ width: '100%', height: '87%' }} >
         <Infinite
-          elementHeight={50}
-          containerHeight={250}
-          infiniteLoadBeginEdgeOffset={50}
+          elementHeight={100}
+          containerHeight={700}
+          infiniteLoadBeginEdgeOffset={100}
           onInfiniteLoad={this.handleInfiniteLoad}
           loadingSpinnerDelegate={this.elementInfiniteLoad()}
           isInfiniteLoading={this.state.isInfiniteLoading}

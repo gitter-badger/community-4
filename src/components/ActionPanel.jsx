@@ -1,25 +1,25 @@
 import React from 'react';
 
-import NavigationMenu from './NavigationMenu';
 import InfiniteUserList from './InfiniteUserList';
+import ProfileBar from './ProfileBar';
 
 const ActionPanel = function ActionPanel(props) {
-  let displayUserTable = <div>Sorry, no users found.</div>;
+  let userList = <div>Sorry, no users found.</div>;
   if (props.users.length !== 0) {
-    displayUserTable = <InfiniteUserList users={props.users} />;
+    userList = <InfiniteUserList users={props.users} />;
   }
 
   return (
-    <div>
-      <NavigationMenu />
-      Action Panel
-      {displayUserTable}
+    <div style={{ height: '100%', width: '35%', float: 'left' }}>
+      <ProfileBar user={props.user} />
+      {userList}
     </div>
   );
 };
 
 ActionPanel.propTypes = {
   users: React.PropTypes.array,
+  user: React.PropTypes.object.isRequired,
 };
 
 export default ActionPanel;

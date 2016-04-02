@@ -49,9 +49,9 @@ class Dashboard extends BaseComponent {
   render() {
     if (this.state.users) {
       return (
-        <div>
-          <ActionPanel users={this.state.users} />
-          <MapPanel users={this.state.users} />
+        <div style={{ height: '100%', width: '100%' }} >
+          <ActionPanel user={this.props.user} users={this.state.users} />
+          <MapPanel user={this.props.user} users={this.state.users} />
         </div>
       );
     }
