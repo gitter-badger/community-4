@@ -8,14 +8,6 @@ import BaseComponent from './common/BaseComponent';
 import Home from './Home';
 import Dashboard from './Dashboard';
 
-const geolocation = (
-  navigator.geolocation || {
-    getCurrentPosition: (success, failure) => {
-      failure('Your browser doesn\'t support geolocation.');
-    },
-  }
-);
-
 class App extends BaseComponent {
 
   constructor(props) {
@@ -87,15 +79,19 @@ class App extends BaseComponent {
     const user = userProfile;
     user.location = {
       type: 'Point',
-      coordinates: [0.0, 0.0],
+      coordinates: [-122.41941550000001, 37.7749295],
     };
-    geolocation.getCurrentPosition((position) => {
+    if (!navigator.geolocation) {
+      alert('Your browser doesn\'t support geolocation.');
+    }
+    navigator.geolocation.getCurrentPosition((position) => {
       user.location.coordinates = [position.coords.longitude, position.coords.latitude];
       callback(user);
     }, () => {
-      console.log('Unable to retrieve current position.');
+      console.warn('Unable to retrieve user current location.');
       callback(user);
-    });
+    },
+    { enableHighAccuracy: true, timeout: 5000 });
   }
 
   registerUserIfNotExisting(profile) {
