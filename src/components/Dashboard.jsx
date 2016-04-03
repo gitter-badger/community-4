@@ -11,14 +11,15 @@ class Dashboard extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this._bind('refreshUserList');
+    this._bind('refreshUserList', 'loadUsersNearPosition');
+    this._locationReference = this.props.user.location;
     this.state = {
       users: null,
     };
   }
 
   componentDidMount() {
-    this.loadUsersNearPosition(this.props.user.location);
+    this.loadUsersNearPosition(this._locationReference);
   }
 
   refreshUserList(newUsers) {
@@ -35,6 +36,7 @@ class Dashboard extends BaseComponent {
   }
 
   loadUsersNearPosition(location) {
+    this._locationReference = location;
     const geoPosQuery = {
       location: {
         $near: {
@@ -66,8 +68,11 @@ class Dashboard extends BaseComponent {
         <div style={{ height: '100%', width: '100%' }} >
           <ActionPanel user={this.props.user} users={this.state.users}
             refreshListCallback={this.refreshUserList}
+            locationReference={this._locationReference}
           />
-          <MapPanel user={this.props.user} users={this.state.users} />
+        <MapPanel user={this.props.user} users={this.state.users}
+          refreshPlaceCallback={this.loadUsersNearPosition}
+        />
         </div>
       );
     }

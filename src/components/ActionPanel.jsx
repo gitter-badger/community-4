@@ -9,6 +9,7 @@ const ActionPanel = function ActionPanel(props) {
     userList = (
       <InfiniteUserList user={props.user} users={props.users}
         refreshListCallback={props.refreshListCallback}
+        locationReference={props.locationReference}
       />);
   }
 
@@ -23,6 +24,7 @@ const ActionPanel = function ActionPanel(props) {
 ActionPanel.propTypes = {
   users: React.PropTypes.array,
   user: React.PropTypes.object.isRequired,
+  locationReference: React.PropTypes.object.isRequired,
   refreshListCallback: React.PropTypes.func.isRequired,
 };
 

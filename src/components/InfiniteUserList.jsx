@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Infinite from 'react-infinite';
 import $ from 'jquery';
 
@@ -16,7 +17,10 @@ export default class InfiniteUserList extends BaseComponent {
       isInfiniteLoading: false,
       allElementsLoaded: false,
     };
-    this._bind('loadNextUsersNearPosition', 'handleInfiniteLoad', 'elementInfiniteLoad');
+    this._locationReference = this.props.locationReference;
+    this._userList = null;
+    this._bind('loadNextUsersNearPosition', 'handleInfiniteLoad',
+    'elementInfiniteLoad', 'assignUserList');
   }
 
   loadNextUsersNearPosition(location, page) {
@@ -56,7 +60,7 @@ export default class InfiniteUserList extends BaseComponent {
   handleInfiniteLoad() {
     if (!this.state.allElementsLoaded) {
       this.setState({ isInfiniteLoading: true });
-      this.loadNextUsersNearPosition(this.props.user.location,
+      this.loadNextUsersNearPosition(this._locationReference,
         (Math.ceil(this.state.elements.length / PAGING_ELEMENTS)) + 1);
     }
   }
@@ -72,10 +76,25 @@ export default class InfiniteUserList extends BaseComponent {
     return false;
   }
 
+  componentWillReceiveProps(newProps) {
+    if (JSON.stringify(newProps.users) === JSON.stringify(this.state.elements) ||
+          newProps.locationReference === this._locationReference) {
+      return;
+    }
+    this._locationReference = newProps.locationReference;
+    ReactDOM.findDOMNode(this._userList).scrollTop = 0;
+    this.setState({ elements: newProps.users });
+  }
+
+  assignUserList(component) {
+    this._userList = component;
+  }
+
   render() {
     return (
       <div style={{ width: '100%', height: '87%' }} >
         <Infinite
+          ref={this.assignUserList}
           elementHeight={100}
           containerHeight={700}
           infiniteLoadBeginEdgeOffset={100}
