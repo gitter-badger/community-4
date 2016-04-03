@@ -38,8 +38,7 @@ class App extends BaseComponent {
 
   registerUserLocation(user) {
     const updatedLocation = {
-      latitude: user.latitude,
-      longitude: user.longitude,
+      location: user.location,
     };
     $.ajax({
       url: `/api/users/${user._id}`,
@@ -64,8 +63,7 @@ class App extends BaseComponent {
       email: '',
       city: profile.location.name,
       profession: profile.headline,
-      latitude: profile.latitude,
-      longitude: profile.longitude,
+      location: profile.location,
     };
     $.ajax({
       url: '/api/users',
@@ -86,11 +84,12 @@ class App extends BaseComponent {
 
   getUserLocationAndExecCallback(userProfile, callback) {
     const user = userProfile;
-    user.latitude = 0.0;
-    user.longitude = 0.0;
+    user.location = {
+      type: 'Point',
+      coordinates: [0.0, 0.0],
+    };
     geolocation.getCurrentPosition((position) => {
-      user.latitude = position.coords.latitude;
-      user.longitude = position.coords.longitude;
+      user.location.coordinates = [position.coords.longitude, position.coords.latitude];
       callback(user);
     }, () => {
       console.log('Unable to retrieve current position.');

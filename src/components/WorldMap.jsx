@@ -15,8 +15,8 @@ class WorldMap extends BaseComponent {
   componentWillMount() {
     this.setState({
       center: {
-        lat: this.props.user.latitude,
-        lng: this.props.user.longitude,
+        lat: this.props.user.location.coordinates[1],
+        lng: this.props.user.location.coordinates[0],
       },
     });
   }
@@ -35,9 +35,11 @@ class WorldMap extends BaseComponent {
                 />
                 <MarkerClusterer averageCenter enableRetinaIcons gridSize={ 60 } >
                   {this.props.users.map(user => {
-                    if (user.latitude && user.longitude) {
+                    if (user.location.coordinates[0] !== 0.0
+                      & user.location.coordinates[1] !== 0.0) {
                       return (<Marker
-                        position={{ lat: user.latitude, lng: user.longitude }}
+                        position={{ lat: user.location.coordinates[1],
+                          lng: user.location.coordinates[0] }}
                         key={ user.user_id }
                       />);
                     }
