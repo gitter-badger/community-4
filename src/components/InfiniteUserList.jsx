@@ -16,16 +16,24 @@ export default class InfiniteUserList extends BaseComponent {
       isInfiniteLoading: false,
       allElementsLoaded: false,
     };
-    this._bind('loadNextUsers', 'handleInfiniteLoad', 'elementInfiniteLoad');
+    this._bind('loadNextUsersNearPosition', 'handleInfiniteLoad', 'elementInfiniteLoad');
   }
 
-  loadNextUsers(page) {
+  loadNextUsersNearPosition(location, page) {
+    const geoPosQuery = {
+      location: {
+        $near: {
+          $geometry: location,
+        },
+      },
+    };
     $.ajax({
       url: '/api/users',
       cache: false,
       data: {
         max_results: PAGING_ELEMENTS,
         page,
+        where: JSON.stringify(geoPosQuery),
       },
       success: function loadNextUsersSuccess(data) {
         let noMoreElements = false;
@@ -37,6 +45,7 @@ export default class InfiniteUserList extends BaseComponent {
           elements: this.state.elements.concat(data._items),
           allElementsLoaded: noMoreElements,
         });
+        this.props.refreshListCallback(data._items);
       }.bind(this),
       error: function loadNextUsersError(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -47,7 +56,8 @@ export default class InfiniteUserList extends BaseComponent {
   handleInfiniteLoad() {
     if (!this.state.allElementsLoaded) {
       this.setState({ isInfiniteLoading: true });
-      this.loadNextUsers((Math.ceil(this.state.elements.length / PAGING_ELEMENTS)) + 1);
+      this.loadNextUsersNearPosition(this.props.user.location,
+        (Math.ceil(this.state.elements.length / PAGING_ELEMENTS)) + 1);
     }
   }
 

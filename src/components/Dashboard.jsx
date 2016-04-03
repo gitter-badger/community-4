@@ -11,13 +11,19 @@ class Dashboard extends BaseComponent {
 
   constructor(props) {
     super(props);
+    this._bind('refreshUserList');
     this.state = {
       users: null,
     };
   }
 
   componentDidMount() {
-    this.loadUserList();
+    this.loadUsersNearPosition(this.props.user.location);
+  }
+
+  refreshUserList(newUsers) {
+    const users = this.state.users;
+    this.setState({ users: users.concat(newUsers) });
   }
 
   removeUserFromArray(arr, user) {
@@ -28,19 +34,27 @@ class Dashboard extends BaseComponent {
     }
   }
 
-  loadUserList() {
+  loadUsersNearPosition(location) {
+    const geoPosQuery = {
+      location: {
+        $near: {
+          $geometry: location,
+        },
+      },
+    };
     $.ajax({
       url: '/api/users',
       cache: false,
       data: {
         max_results: PAGING_ELEMENTS,
         page: 1,
+        where: JSON.stringify(geoPosQuery),
       },
-      success: function loadUserListSuccess(data) {
+      success: function loadUsersNearPositionSuccess(data) {
         this.removeUserFromArray(data._items, this.props.user);
         this.setState({ users: data._items });
       }.bind(this),
-      error: function loadUserListError(xhr, status, err) {
+      error: function loadUsersNearPositionError(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this),
     });
@@ -50,7 +64,9 @@ class Dashboard extends BaseComponent {
     if (this.state.users) {
       return (
         <div style={{ height: '100%', width: '100%' }} >
-          <ActionPanel user={this.props.user} users={this.state.users} />
+          <ActionPanel user={this.props.user} users={this.state.users}
+            refreshListCallback={this.refreshUserList}
+          />
           <MapPanel user={this.props.user} users={this.state.users} />
         </div>
       );

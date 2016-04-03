@@ -6,7 +6,10 @@ import ProfileBar from './ProfileBar';
 const ActionPanel = function ActionPanel(props) {
   let userList = <div>Sorry, no users found.</div>;
   if (props.users.length !== 0) {
-    userList = <InfiniteUserList users={props.users} />;
+    userList = (
+      <InfiniteUserList user={props.user} users={props.users}
+        refreshListCallback={props.refreshListCallback}
+      />);
   }
 
   return (
@@ -20,6 +23,7 @@ const ActionPanel = function ActionPanel(props) {
 ActionPanel.propTypes = {
   users: React.PropTypes.array,
   user: React.PropTypes.object.isRequired,
+  refreshListCallback: React.PropTypes.func.isRequired,
 };
 
 export default ActionPanel;

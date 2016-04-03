@@ -40,7 +40,8 @@ class WorldMap extends BaseComponent {
                       return (<Marker
                         position={{ lat: user.location.coordinates[1],
                           lng: user.location.coordinates[0] }}
-                        key={ user.user_id }
+                        key={user.user_id}
+                        title={`${user.firstname} ${user.lastname}`}
                       />);
                     }
                     return false;
