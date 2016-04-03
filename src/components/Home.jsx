@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
+import React from 'react/lib/React';
+import { Button } from 'react-bootstrap/lib/Button';
 
 import BaseComponent from './common/BaseComponent';
 

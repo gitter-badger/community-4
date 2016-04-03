@@ -1,3 +1,9 @@
 public/bundle.js
+public/*.map
+public/*.woff2
+public/*.svg
+public/*.ttf
+public/*.eot
+public/*.woff
 *.log
 config/config.js

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react/lib/React';
 
 import InfiniteUserList from './InfiniteUserList';
 import ProfileBar from './ProfileBar';

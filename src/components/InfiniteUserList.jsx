@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react/lib/React';
 import ReactDOM from 'react-dom';
 import Infinite from 'react-infinite';
 import $ from 'jquery';

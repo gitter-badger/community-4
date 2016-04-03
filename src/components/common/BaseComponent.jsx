@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react/lib/React';
 
 class BaseComponent extends React.Component {
   _bind(...methods) {

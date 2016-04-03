@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react/lib/React';
 import $ from 'jquery';
 
 import BaseComponent from './common/BaseComponent';

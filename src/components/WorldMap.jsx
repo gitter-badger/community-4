@@ -1,5 +1,8 @@
-import React from 'react';
-import { GoogleMapLoader, GoogleMap, Marker, SearchBox } from 'react-google-maps';
+import React from 'react/lib/React';
+import GoogleMapLoader from 'react-google-maps/lib/GoogleMapLoader';
+import GoogleMap from 'react-google-maps/lib/GoogleMap';
+import Marker from 'react-google-maps/lib/Marker';
+import SearchBox from 'react-google-maps/lib/SearchBox';
 import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 
 import BaseComponent from './common/BaseComponent';
