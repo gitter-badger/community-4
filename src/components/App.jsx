@@ -64,6 +64,7 @@ class App extends BaseComponent {
       city: profile.location.name,
       profession: profile.headline,
       location: profile.location,
+      avatar: profile.picture,
     };
     $.ajax({
       url: '/api/users',
@@ -101,7 +102,7 @@ class App extends BaseComponent {
     $.ajax({
       url: '/api/users',
       data: {
-        user_id: profile.user_id,
+        where: JSON.stringify({ user_id: profile.user_id }),
       },
       dataType: 'json',
       cache: false,
