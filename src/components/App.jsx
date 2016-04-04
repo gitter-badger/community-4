@@ -37,8 +37,9 @@ class App extends BaseComponent {
       type: 'PATCH',
       data: JSON.stringify(updatedLocation),
       success: function registerUserLocationSuccess() {
+        this.setState({ profile: user });
         console.log('User position updated.');
-      },
+      }.bind(this),
       error: function registerUserLocationError(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this),
@@ -104,7 +105,6 @@ class App extends BaseComponent {
         if (data._items.length !== 0) {
           console.log('User exists!');
           const userProfile = data._items[0];
-          this.setState({ profile: userProfile });
           this.getUserLocationAndExecCallback(userProfile, this.registerUserLocation.bind(this));
           localStorage.setItem('userID', userProfile._id);
         } else {
