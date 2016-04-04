@@ -2,8 +2,6 @@ import React from 'react/lib/React';
 import Auth0Lock from 'auth0-lock';
 import $ from 'jquery';
 
-import config from 'config';
-
 import BaseComponent from './common/BaseComponent';
 import Home from './Home';
 import Dashboard from './Dashboard';
@@ -24,7 +22,7 @@ class App extends BaseComponent {
   }
 
   componentWillMount() {
-    this.lock = new Auth0Lock(config.auth0_clientID, config.auth0_domain);
+    this.lock = new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN);
     this.setState({ idToken: this.getIdToken() });
   }
 

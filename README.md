@@ -24,10 +24,6 @@ Install the dependencies:
 $ npm install
 ```
 
-Create a configuration file named `config.js` under the `config` folder.
-
-See `config/config-example.js` to create your configuration.
-
 Run the app:
 
 ```shell
