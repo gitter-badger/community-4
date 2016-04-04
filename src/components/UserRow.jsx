@@ -1,7 +1,7 @@
 import React from 'react/lib/React';
-import { Image } from 'react-bootstrap/lib/Image';
-import { Button } from 'react-bootstrap/lib/Button';
-import { Glyphicon } from 'react-bootstrap/lib/Glyphicon';
+import Image from 'react-bootstrap/lib/Image';
+import Button from 'react-bootstrap/lib/Button';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 
 const UserRow = function UserRow(props) {
