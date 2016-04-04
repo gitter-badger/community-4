@@ -48,5 +48,5 @@ $ docker create --name ui-build community-ui-build
 Serve the app usign Nginx:
 
 ```shell
-$ docker run --volumes-from ui-build -v "${PWD}/nginx.conf:/etc/nginx/nginx.conf" --link community-api -p 80:80 --name community-ui nginx
+$ docker run --rm --volumes-from ui-build -v "${PWD}/nginx.conf:/etc/nginx/nginx.conf" --link community-api -p 80:80 --name community-ui nginx
 ```
