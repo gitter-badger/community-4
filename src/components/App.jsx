@@ -5,7 +5,7 @@ import Loader from 'react-loader';
 
 import BaseComponent from './common/BaseComponent';
 import Home from './Home';
-import Dashboard from './Dashboard';
+import Dashboard from './dashboard/Dashboard';
 
 class App extends BaseComponent {
 

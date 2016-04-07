@@ -1,7 +1,7 @@
 import React from 'react/lib/React';
 
-import InfiniteUserList from './InfiniteUserList';
-import ProfileBar from './ProfileBar';
+import InfiniteUserList from './userlist/InfiniteUserList';
+import ProfileBar from './profile/ProfileBar';
 
 const ActionPanel = function ActionPanel(props) {
   let userList = <div>Sorry, no users found.</div>;

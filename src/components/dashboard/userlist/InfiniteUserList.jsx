@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Infinite from 'react-infinite';
 import $ from 'jquery';
 
-import BaseComponent from './common/BaseComponent';
+import BaseComponent from '../../common/BaseComponent';
 import UserRow from './UserRow';
 
 const PAGING_ELEMENTS = 10;

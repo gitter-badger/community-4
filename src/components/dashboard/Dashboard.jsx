@@ -2,7 +2,7 @@ import React from 'react/lib/React';
 import $ from 'jquery';
 import Loader from 'react-loader';
 
-import BaseComponent from './common/BaseComponent';
+import BaseComponent from '../common/BaseComponent';
 import ActionPanel from './ActionPanel';
 import MapPanel from './MapPanel';
 

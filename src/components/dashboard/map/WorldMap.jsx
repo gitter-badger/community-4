@@ -5,7 +5,7 @@ import Marker from 'react-google-maps/lib/Marker';
 import SearchBox from 'react-google-maps/lib/SearchBox';
 import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 
-import BaseComponent from './common/BaseComponent';
+import BaseComponent from '../../common/BaseComponent';
 
 const searchBoxInputStyle = {
   border: '1px solid transparent',

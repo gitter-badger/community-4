@@ -1,6 +1,6 @@
 import React from 'react/lib/React';
 
-import WorldMap from './WorldMap';
+import WorldMap from './map/WorldMap';
 
 const MapPanel = function MapPanel(props) {
   return (
