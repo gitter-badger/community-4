@@ -15,11 +15,23 @@ const UserRow = function UserRow(props) {
       </a>
     );
   }
+  let displayAvatar = (
+    <Image src="/images/avatar.png" responsive style={{ margin: '0 auto' }} />
+  );
+  if (this.props.user.avatar) {
+    displayAvatar = (
+      <Image src={this.props.user.avatar} responsive style={{
+        margin: '0 auto',
+        position: 'relative', top: '50%',
+        transform: 'translateY(-50%)' }}
+      />
+    );
+  }
 
   return (
     <div style={{ width: '100%', height: '100px' }}>
       <div style={{ width: '25%', float: 'left' }}>
-        <Image src="/images/avatar.png" responsive style={{ margin: '0 auto' }} />
+        {displayAvatar}
       </div>
       <div style={{ height: '100%', width: '75%', float: 'left' }}>
         <div style={{ height: '100%', width: '65%', float: 'left' }}>
