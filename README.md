@@ -24,6 +24,13 @@ Install the dependencies:
 $ npm install
 ```
 
+Export your Auth0 domain and client ID.
+
+```shell
+$ export AUTH0_DOMAIN=my.auth0.domain
+$ export AUTH0_CLIENT_ID=my.auth0.clientID
+```
+
 Run the app:
 
 ```shell
