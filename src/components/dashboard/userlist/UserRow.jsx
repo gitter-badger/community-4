@@ -8,7 +8,7 @@ const UserRow = function UserRow(props) {
   let displayContactButton = <div></div>;
   if (props.user.email) {
     displayContactButton = (
-      <a href={'mailto:' + props.user.email + '?subject=Hi from Community!'}>
+      <a href={`mailto:${props.user.email}?subject=Hi from Community!`}>
         <Button bsStyle="info" bsSize="large">
           <Glyphicon glyph="envelope" />
         </Button>
@@ -18,9 +18,9 @@ const UserRow = function UserRow(props) {
   let displayAvatar = (
     <Image src="/images/avatar.png" responsive style={{ margin: '0 auto' }} />
   );
-  if (this.props.user.avatar) {
+  if (props.user.avatar) {
     displayAvatar = (
-      <Image src={this.props.user.avatar} responsive style={{
+      <Image src={props.user.avatar} responsive style={{
         margin: '0 auto',
         position: 'relative', top: '50%',
         transform: 'translateY(-50%)' }}
