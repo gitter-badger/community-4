@@ -1,5 +1,6 @@
 import React from 'react/lib/React';
 import $ from 'jquery';
+import Loader from 'react-loader';
 
 import BaseComponent from './common/BaseComponent';
 import ActionPanel from './ActionPanel';
@@ -14,6 +15,7 @@ class Dashboard extends BaseComponent {
     this._bind('refreshUserList', 'loadUsersNearPosition');
     this._locationReference = this.props.user.location;
     this.state = {
+      loaded: false,
       users: null,
     };
   }
@@ -54,7 +56,7 @@ class Dashboard extends BaseComponent {
       },
       success: function loadUsersNearPositionSuccess(data) {
         this.removeUserFromArray(data._items, this.props.user);
-        this.setState({ users: data._items });
+        this.setState({ users: data._items, loaded: true });
       }.bind(this),
       error: function loadUsersNearPositionError(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -63,20 +65,19 @@ class Dashboard extends BaseComponent {
   }
 
   render() {
-    if (this.state.users) {
-      return (
+    return (
+      <Loader loaded={this.state.loaded} style={{ height: '100%', width: '100%' }}>
         <div style={{ height: '100%', width: '100%' }} >
           <ActionPanel user={this.props.user} users={this.state.users}
             refreshListCallback={this.refreshUserList}
             locationReference={this._locationReference}
           />
-        <MapPanel user={this.props.user} users={this.state.users}
-          refreshPlaceCallback={this.loadUsersNearPosition}
-        />
+          <MapPanel user={this.props.user} users={this.state.users}
+            refreshPlaceCallback={this.loadUsersNearPosition}
+          />
         </div>
-      );
-    }
-    return (<div>Loading dashboard...</div>);
+      </Loader>
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react/lib/React';
 import Auth0Lock from 'auth0-lock';
 import $ from 'jquery';
+import Loader from 'react-loader';
 
 import BaseComponent from './common/BaseComponent';
 import Home from './Home';
@@ -14,6 +15,7 @@ class App extends BaseComponent {
     this.state = {
       idToken: null,
       profile: null,
+      loaded: false,
     };
   }
 
@@ -37,7 +39,7 @@ class App extends BaseComponent {
       type: 'PATCH',
       data: JSON.stringify(updatedLocation),
       success: function registerUserLocationSuccess() {
-        this.setState({ profile: user });
+        this.setState({ profile: user, loaded: true });
         console.log('User position updated.');
       }.bind(this),
       error: function registerUserLocationError(xhr, status, err) {
@@ -65,7 +67,7 @@ class App extends BaseComponent {
       success: function registerNewUserSuccess(data) {
         console.log('User created');
         user._id = data._id;
-        this.setState({ profile: user });
+        this.setState({ profile: user, loaded: true });
         localStorage.setItem('userID', data._id);
       }.bind(this),
       error: function registerNewUserError(xhr, status, err) {
@@ -134,7 +136,7 @@ class App extends BaseComponent {
       url: `/api/users/${userID}`,
       cache: false,
       success: function getProfileSuccess(userData) {
-        this.setState({ profile: userData });
+        this.setState({ profile: userData, loaded: true });
       }.bind(this),
       error: function getProfileError(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -164,12 +166,11 @@ class App extends BaseComponent {
 
   render() {
     if (this.state.idToken) {
-      if (this.state.profile) {
-        return (
+      return (
+        <Loader loaded={this.state.loaded}>
           <Dashboard user={this.state.profile} />
-        );
-      }
-      return (<div>Loading dashboard...</div>);
+        </Loader>
+      );
     }
     return (<Home lock={this.lock} />);
   }
