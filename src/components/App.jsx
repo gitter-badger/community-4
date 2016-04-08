@@ -6,16 +6,19 @@ import Loader from 'react-loader';
 import BaseComponent from './common/BaseComponent';
 import Home from './Home';
 import Dashboard from './dashboard/Dashboard';
+import ErrorView from './error/ErrorView';
 
 class App extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this._bind('getIdToken');
+    this._bind('getIdToken', 'setError', 'setWarning');
     this.state = {
       idToken: null,
       profile: null,
       loaded: false,
+      error: null,
+      warning: null,
     };
   }
 
@@ -26,6 +29,21 @@ class App extends BaseComponent {
   componentWillMount() {
     this.lock = new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN);
     this.setState({ idToken: this.getIdToken() });
+  }
+
+  setError(msg, cause) {
+    const error = {
+      cause,
+      msg,
+    };
+    this.setState({ error });
+  }
+
+  setWarning(msg) {
+    const warning = {
+      msg,
+    };
+    this.setState({ warning });
   }
 
   registerUserLocation(user) {
@@ -40,10 +58,9 @@ class App extends BaseComponent {
       data: JSON.stringify(updatedLocation),
       success: function registerUserLocationSuccess() {
         this.setState({ profile: user, loaded: true });
-        console.log('User position updated.');
       }.bind(this),
-      error: function registerUserLocationError(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+      error: function registerUserLocationError() {
+        this.setWarning('Unable to persist your new position.');
       }.bind(this),
     });
   }
@@ -65,13 +82,12 @@ class App extends BaseComponent {
       type: 'POST',
       data: JSON.stringify(user),
       success: function registerNewUserSuccess(data) {
-        console.log('User created');
         user._id = data._id;
         this.setState({ profile: user, loaded: true });
         localStorage.setItem('userID', data._id);
       }.bind(this),
       error: function registerNewUserError(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        this.setError('User registration request failed', err);
       }.bind(this),
     });
   }
@@ -83,13 +99,13 @@ class App extends BaseComponent {
       coordinates: [-122.41941550000001, 37.7749295],
     };
     if (!navigator.geolocation) {
-      alert('Your browser doesn\'t support geolocation.');
+      this.setWarning('Your browser doesn\'t support geolocation.');
     }
     navigator.geolocation.getCurrentPosition((position) => {
       user.location.coordinates = [position.coords.longitude, position.coords.latitude];
       callback(user);
     }, () => {
-      console.warn('Unable to retrieve user current location.');
+      this.setWarning('Unable to retrieve your current location.');
       callback(user);
     },
     { enableHighAccuracy: true, timeout: 5000 });
@@ -105,18 +121,16 @@ class App extends BaseComponent {
       cache: false,
       success: function registerUserIfNotExistingSuccess(data) {
         if (data._items.length !== 0) {
-          console.log('User exists!');
           const userProfile = data._items[0];
           this.getUserLocationAndExecCallback(userProfile, this.registerUserLocation.bind(this));
           localStorage.setItem('userID', userProfile._id);
         } else {
-          console.log('User do not exists! It will be created.');
           const userProfile = profile;
           this.getUserLocationAndExecCallback(userProfile, this.registerNewUser.bind(this));
         }
       }.bind(this),
       error: function registerUserIfNotExistingError(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        this.setError('User existence verification request failed', err);
       }.bind(this),
     });
   }
@@ -124,7 +138,7 @@ class App extends BaseComponent {
   getProfileAndUpdateUser(idToken) {
     this.lock.getProfile(idToken, (err, profile) => {
       if (err) {
-        console.log('Error loading the Profile', err);
+        this.setError('Auth0 user profile access failed', err);
         return;
       }
       this.registerUserIfNotExisting(profile);
@@ -139,7 +153,7 @@ class App extends BaseComponent {
         this.setState({ profile: userData, loaded: true });
       }.bind(this),
       error: function getProfileError(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        this.setError('User profile access request failed', err);
       }.bind(this),
     });
   }
@@ -155,7 +169,7 @@ class App extends BaseComponent {
         this.getProfileAndUpdateUser(idToken);
       }
       if (authHash.error) {
-        console.log('Error signing in', authHash);
+        this.setError('Auth0 authentication error', authHash.error);
         return null;
       }
     } else if (idToken && userID) {
@@ -165,10 +179,13 @@ class App extends BaseComponent {
   }
 
   render() {
+    if (this.state.error) {
+      return (<ErrorView error={this.state.error} />);
+    }
     if (this.state.idToken) {
       return (
         <Loader loaded={this.state.loaded}>
-          <Dashboard user={this.state.profile} />
+          <Dashboard user={this.state.profile} warning={this.state.warning} />
         </Loader>
       );
     }

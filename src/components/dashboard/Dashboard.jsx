@@ -5,6 +5,7 @@ import Loader from 'react-loader';
 import BaseComponent from '../common/BaseComponent';
 import ActionPanel from './ActionPanel';
 import MapPanel from './MapPanel';
+import ErrorView from '../error/ErrorView';
 
 const PAGING_ELEMENTS = 10;
 
@@ -12,16 +13,25 @@ class Dashboard extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this._bind('refreshUserList', 'loadUsersNearPosition');
+    this._bind('refreshUserList', 'loadUsersNearPosition', 'setError');
     this._locationReference = this.props.user.location;
     this.state = {
       loaded: false,
       users: null,
+      error: null,
     };
   }
 
   componentDidMount() {
     this.loadUsersNearPosition(this._locationReference);
+  }
+
+  setError(msg, cause) {
+    const error = {
+      cause,
+      msg,
+    };
+    this.setState({ error });
   }
 
   refreshUserList(newUsers) {
@@ -59,18 +69,23 @@ class Dashboard extends BaseComponent {
         this.setState({ users: data._items, loaded: true });
       }.bind(this),
       error: function loadUsersNearPositionError(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        this.setError('User loading request failed', err);
       }.bind(this),
     });
   }
 
   render() {
+    if (this.state.error) {
+      return (<ErrorView error={this.state.error} />);
+    }
+
     return (
       <Loader loaded={this.state.loaded} style={{ height: '100%', width: '100%' }}>
         <div style={{ height: '100%', width: '100%' }} >
           <ActionPanel user={this.props.user} users={this.state.users}
             refreshListCallback={this.refreshUserList}
             locationReference={this._locationReference}
+            warning={this.props.warning}
           />
           <MapPanel user={this.props.user} users={this.state.users}
             refreshPlaceCallback={this.loadUsersNearPosition}

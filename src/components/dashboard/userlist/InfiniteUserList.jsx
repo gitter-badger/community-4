@@ -5,6 +5,7 @@ import $ from 'jquery';
 
 import BaseComponent from '../../common/BaseComponent';
 import UserRow from './UserRow';
+import WarningAlert from '../../error/WarningAlert';
 
 const PAGING_ELEMENTS = 10;
 
@@ -16,11 +17,19 @@ export default class InfiniteUserList extends BaseComponent {
       elements: props.users,
       isInfiniteLoading: false,
       allElementsLoaded: false,
+      warning: null,
     };
     this._locationReference = this.props.locationReference;
     this._userList = null;
     this._bind('loadNextUsersNearPosition', 'handleInfiniteLoad',
-    'elementInfiniteLoad', 'assignUserList');
+    'elementInfiniteLoad', 'assignUserList', 'setWarning');
+  }
+
+  setWarning(msg) {
+    const warning = {
+      msg,
+    };
+    this.setState({ warning });
   }
 
   loadNextUsersNearPosition(location, page) {
@@ -51,8 +60,8 @@ export default class InfiniteUserList extends BaseComponent {
         });
         this.props.refreshListCallback(data._items);
       }.bind(this),
-      error: function loadNextUsersError(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+      error: function loadNextUsersError() {
+        this.setWarning('Unable to load users');
       }.bind(this),
     });
   }
@@ -91,6 +100,12 @@ export default class InfiniteUserList extends BaseComponent {
   }
 
   render() {
+    let warningAlert = false;
+    if (this.state.warning) {
+      warningAlert = (
+        <WarningAlert message={this.state.warning.msg} />
+      );
+    }
     return (
       <div style={{ width: '100%', height: '87%' }} >
         <Infinite
@@ -106,6 +121,7 @@ export default class InfiniteUserList extends BaseComponent {
             <UserRow key={element._id} user={element} />
           )}
         </Infinite>
+        {warningAlert}
       </div>
     );
   }
