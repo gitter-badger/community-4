@@ -94,21 +94,28 @@ class App extends BaseComponent {
 
   getUserLocationAndExecCallback(userProfile, callback) {
     const user = userProfile;
-    user.location = {
-      type: 'Point',
-      coordinates: [-122.41941550000001, 37.7749295],
-    };
-    if (!navigator.geolocation) {
-      this.setWarning('Your browser doesn\'t support geolocation.');
+    if (!user.location) {
+      user.location = {
+        type: 'Point',
+        coordinates: [-122.41941550000001, 37.7749295],
+      };
     }
-    navigator.geolocation.getCurrentPosition((position) => {
-      user.location.coordinates = [position.coords.longitude, position.coords.latitude];
+    if (!navigator.geolocation) {
+      this.setWarning('Your browser does not support geolocation.');
       callback(user);
-    }, () => {
-      this.setWarning('Unable to retrieve your current location.');
-      callback(user);
-    },
-    { enableHighAccuracy: true, timeout: 5000 });
+    } else {
+      navigator.geolocation.getCurrentPosition((position) => {
+        user.location = {
+          type: 'Point',
+          coordinates: [position.coords.longitude, position.coords.latitude],
+        };
+        callback(user);
+      }, () => {
+        this.setWarning('Unable to retrieve your current location.');
+        callback(user);
+      },
+      { enableHighAccuracy: true, timeout: 5000 });
+    }
   }
 
   registerUserIfNotExisting(profile) {
